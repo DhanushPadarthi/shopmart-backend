@@ -1,14 +1,18 @@
 // server.js - Main Express application file
 const express = require('express');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv'); // Import dotenv
 const cors = require('cors'); // For handling Cross-Origin Resource Sharing
 const connectDB = require('./db'); // MongoDB connection setup
+
+// Import routes
 const authRoutes = require('./routes/authRoutes'); // Authentication routes
 const productRoutes = require('./routes/productRoutes'); // Product routes
 const cartRoutes = require('./routes/cartRoutes'); // Cart routes
+const orderRoutes = require('./routes/orderRoutes'); // NEW: Import order routes
 
 // Load environment variables from .env file
-dotenv.config();
+// This must be called early, before any other code tries to access process.env variables
+dotenv.config(); 
 
 // Connect to MongoDB database
 connectDB();
@@ -23,9 +27,10 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/auth', authRoutes); // Authentication routes (register, login)
+app.use('/api/auth', authRoutes); // Authentication routes (register, login, profile, users)
 app.use('/api/products', productRoutes); // Product management routes
 app.use('/api/cart', cartRoutes); // Shopping cart routes
+app.use('/api/orders', orderRoutes); // NEW: Order management routes
 
 // Simple root route
 app.get('/', (req, res) => {
