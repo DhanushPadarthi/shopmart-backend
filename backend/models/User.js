@@ -25,13 +25,13 @@ const userSchema = mongoose.Schema(
         // User's shipping/billing address (added from the latest version)
         address: {
             type: String,
-            required: true,
+            required: true, // This field is still required based on user's schema
             trim: true
         },
         // User's phone number (added from the latest version)
         phone: {
             type: String,
-            required: true,
+            required: true, // This field is still required based on user's schema
             trim: true
         },
         role: {
@@ -39,6 +39,21 @@ const userSchema = mongoose.Schema(
             enum: ['user', 'admin'],
             default: 'user',
         },
+        // Embedded cart for the user
+        cart: [
+            {
+                productId: { // Reference to the Product model
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Product',
+                    required: true
+                },
+                quantity: {
+                    type: Number,
+                    required: true,
+                    min: 1
+                }
+            }
+        ]
     },
     {
         timestamps: true, // Adds createdAt and updatedAt fields automatically
